@@ -5,6 +5,7 @@
   - [Clone this GitHub Repository](#clone-this-github-repository)
   - [Configure virtual environment](#configure-virtual-environment)
   - [Install required packages and start development server](#install-required-packages-and-start-development-server)
+- [Code Overview](#code-overview)
 - [Deployment](#deployment)
 
 ## Start developing
@@ -26,6 +27,9 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 python manage.py runserver
 ```
+
+## Code Overview
+
 
 ## Deployment
 Add deployment instructions here
