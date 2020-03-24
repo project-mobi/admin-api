@@ -97,9 +97,17 @@ class Location(models.Model):
         default=uuid.uuid4,
         editable=False
     )
+    name = models.CharField(max_length=50)
+    short_name = models.CharField(max_length=4)
     region = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
+    provider = models.ForeignKey(
+        'Provider',
+        on_delete=models.CASCADE
+    )
+
     
 
 class Provider(models.Model):
@@ -108,7 +116,12 @@ class Provider(models.Model):
         default=uuid.uuid4,
         editable=False
     )
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return '%s' % (self.name)
 
 class Machine(models.Model):
     id = models.UUIDField(
@@ -120,3 +133,12 @@ class Machine(models.Model):
         'Provider',
         on_delete=models.CASCADE
     )
+
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created']
+        #unique_together = [['name', 'created']]
+    
+    def __str__(self):
+        return '%s - %s' % (self.provider, self.created)
