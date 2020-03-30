@@ -13,7 +13,7 @@ class BaseFilter(filters.FilterSet):
         user = getattr(self.request, 'user', None)
         if (type(user) != type(AnonymousUser())):
             if user.is_staff:
-                    return parent.filter(organisation=user.organisation)
+                    return parent
             else:
                 if(type(parent.model) != type(models.Organisation())):
                     return parent.filter(organisation=user.organisation)
