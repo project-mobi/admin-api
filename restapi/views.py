@@ -18,24 +18,39 @@ from rest_framework.response import Response
 import restapi.models as models
 import restapi.serializers as serializers
 
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 
 from rest_framework import permissions
+from restapi.permissions import BelongsToOrganisation
+from restapi.filters import OrganisationFilter
 
 from rest_framework.reverse import reverse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
+import logging
+
+logger = logging.getLogger('django.server')
 
 
 
 # Refactor using viewsets
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+#class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list` and `detail` actions.
     """
-    queryset = User.objects.all()
+    queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
+    permission_classes = [permissions.IsAdminUser|BelongsToOrganisation]
+    #permission_classes = [BelongsToOrganisation]
+    filterset_class = OrganisationFilter
+"""     def get_queryset(self):
+        if self.request.user.is_staff:
+            return self.queryset
+        else:
+            return self.queryset \
+                .filter(organisation=self.request.user.organisation) """
 
 
 # Refactor using viewset
@@ -46,7 +61,8 @@ class OrganisationViewSet(viewsets.ModelViewSet):
     """
     queryset = models.Organisation.objects.all()
     serializer_class = serializers.OrganisationSerializer
-    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAdminUser|BelongsToOrganisation]
+    filterset_class = OrganisationFilter
 
    
 
@@ -115,3 +131,4 @@ class MachineViewSet(viewsets.ModelViewSet):
     queryset = models.Machine.objects.all()
     serializer_class = serializers.MachineSerializer
     #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filterset_fields = ['trusted_admin']
