@@ -1,5 +1,16 @@
 from django.db import models
 import uuid
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    organisation = models.ForeignKey(
+        'Organisation',
+        related_name='users',
+        on_delete=models.CASCADE,
+        default='c749d4a5-3d70-4661-a2c7-da1899c09282',
+    )
+    
 
 class OrganisationManager(models.Manager):
     def get_by_natural_key(self, name, created):
@@ -14,7 +25,7 @@ class Organisation(models.Model):
     )
     name = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
-
+    #deployments = models.
     objects = OrganisationManager()
 
     class Meta:
@@ -54,10 +65,11 @@ class Service(models.Model):
     )
     date_added = models.DateTimeField(auto_now_add=True)
     added_by = models.ForeignKey(
-        'auth.User',
+        'User',
         related_name='services',
         on_delete=models.CASCADE
     )
+    
     active = models.BooleanField(default=False)
     source = models.URLField()
     website = models.URLField()
@@ -88,7 +100,8 @@ class Deployment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     organisation = models.ForeignKey(
         'Organisation',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='deployments'
     )
 
 class Location(models.Model):
@@ -133,8 +146,15 @@ class Machine(models.Model):
         'Provider',
         on_delete=models.CASCADE
     )
-
+    ipv4 = models.CharField(max_length=15, blank=True)
+    ipv6 = models.CharField(max_length=40, blank=True)
+    trusted_admin = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
+    organisation = models.ForeignKey(
+        "Organisation",
+        default="426530a7-62a8-4234-b59a-c7d2baf2084c",
+        on_delete=models.SET_DEFAULT,
+        related_name='machines')
 
     class Meta:
         ordering = ['created']
