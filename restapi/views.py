@@ -22,7 +22,7 @@ import restapi.serializers as serializers
 
 from rest_framework import permissions
 from restapi.permissions import BelongsToOrganisation
-from restapi.filters import OrganisationFilter
+from restapi.filters import BaseFilter, MachineFilter
 
 from rest_framework.reverse import reverse
 from rest_framework import viewsets
@@ -44,7 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
     permission_classes = [permissions.IsAdminUser|BelongsToOrganisation]
     #permission_classes = [BelongsToOrganisation]
-    filterset_class = OrganisationFilter
+    filterset_class = BaseFilter
 """     def get_queryset(self):
         if self.request.user.is_staff:
             return self.queryset
@@ -62,7 +62,7 @@ class OrganisationViewSet(viewsets.ModelViewSet):
     queryset = models.Organisation.objects.all()
     serializer_class = serializers.OrganisationSerializer
     permission_classes = [permissions.IsAdminUser|BelongsToOrganisation]
-    filterset_class = OrganisationFilter
+    filterset_class = BaseFilter
 
    
 
@@ -74,6 +74,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
     """
     queryset = models.Service.objects.all()
     serializer_class = serializers.ServiceSerializer
+
     #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
@@ -88,6 +89,7 @@ class DeploymentViewSet(viewsets.ModelViewSet):
     """
     queryset = models.Deployment.objects.all()
     serializer_class = serializers.DeploymentSerializer
+    filterset_class = BaseFilter
     #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @action(detail=False)
@@ -131,4 +133,5 @@ class MachineViewSet(viewsets.ModelViewSet):
     queryset = models.Machine.objects.all()
     serializer_class = serializers.MachineSerializer
     #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filterset_fields = ['trusted_admin']
+    #filterset_fields = ['trusted_admin']
+    filterset_class = MachineFilter
