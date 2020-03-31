@@ -9,6 +9,10 @@ import re
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     services = serializers.HyperlinkedRelatedField(many=True, view_name="service-detail", read_only=True)
     organisation = serializers.HyperlinkedRelatedField(view_name="organisation-detail", queryset=Organisation.objects.all())
+    
+    def validate_password(self, value):
+        pass
+    
     class Meta:
         model = User
         #fieldsList = User.objects.all()
