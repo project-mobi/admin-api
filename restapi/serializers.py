@@ -73,7 +73,7 @@ class MachineSerializer(serializers.HyperlinkedModelSerializer):
         return value
     
     def validate_ipv6(self, value):
-        regex=r"(([0-9a-f][0-9a-f][0-9a-f][0-9a-f]|[0-9a-f][0-9a-f][0-9a-f]|[0-9a-f][0-9a-f]|[0-9a-f])(\:|$)){8}"
+        regex=r"(([0-9a-f][0-9a-f][0-9a-f][0-9a-f]|[0-9a-f][0-9a-f][0-9a-f]|[0-9a-f][0-9a-f]|[0-9a-f]?)(\:|$)){8}"
 
         if(value != "" and not re.search(regex, value)):
             raise serializers.ValidationError("IPv6 Address is invalid")
