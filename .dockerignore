@@ -1,0 +1,8 @@
+__pycache__
+admin-env
+package.json
+db copy.sqlite3
+restapi/migrations
+restapi/__pycache__
+.git
+.gitignore

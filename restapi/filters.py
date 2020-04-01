@@ -32,5 +32,5 @@ Extend BaseFilter class with model / view specific filter fields
 class MachineFilter(BaseFilter):
     class Meta:
         model = models.Machine
-        fields = ['type']
+        fields = ['type', 'hostname']
     
