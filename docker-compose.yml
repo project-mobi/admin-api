@@ -28,7 +28,7 @@ services:
       - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+      - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
