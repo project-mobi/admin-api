@@ -148,14 +148,18 @@ class Machine(models.Model):
     )
     ipv4 = models.CharField(max_length=15, blank=True)
     ipv6 = models.CharField(max_length=40, blank=True)
-    trusted_admin = models.BooleanField(default=False)
+    hostname = models.CharField(max_length=100, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     organisation = models.ForeignKey(
         "Organisation",
         default="426530a7-62a8-4234-b59a-c7d2baf2084c",
         on_delete=models.SET_DEFAULT,
         related_name='machines')
-
+    type = models.CharField(
+        max_length=6,
+        choices=[('node', 'node'), ('master', 'master'), ('admin','admin')],
+        default='node'
+    )
     class Meta:
         ordering = ['created']
         #unique_together = [['name', 'created']]
