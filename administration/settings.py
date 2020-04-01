@@ -25,7 +25,7 @@ SECRET_KEY = '8qxiustsr3_dslg-#dcxuaoc+7%v2s2%ra3%evwkv!1dn_j6#e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['api.projectmobi.io']
+ALLOWED_HOSTS = ['api.projectmobi.io', '127.0.0.1']
 
 
 # Application definition
