@@ -29,24 +29,28 @@ jobs:
       run: |
         python manage.py test
         
+            
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy on Server
-        uses: appleboy/ssh-action@master
+      - name: ls -a via OPEN SSH Private Key
+        uses: garygrossgarten/github-action-ssh@release
         with:
+          command: ls -a
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          debug: true
-          script: |
-            cd administration
-            docker-compose down
-            git checkout -b master
-            docker-compose up --build -d
-            
+          privateKey: ${{ secrets.KEY}}
+      - name: this step should not fail
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: whomai
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          privateKey: ${{ secrets.KEY}}
+
             
             
         
