@@ -33,3 +33,8 @@ python manage.py runserver
 
 ## Deployment
 Add deployment instructions here
+```bash
+git clone https://github.com/project-mobi/administration.git
+cd administration
+docker-compose up -d --build
+```
