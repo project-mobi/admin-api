@@ -28,3 +28,24 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+        
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy on Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd administration
+            docker-compose down
+            git checkout -b master
+            docker-compose up --build -d
+            
+            
+            
+        
